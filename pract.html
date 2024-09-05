@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Destination Slider</title>
+    <style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #f5f5f5;
+}
+
+.section__container {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 0 20px;
+}
+
+.section__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.section__title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.section__subtitle {
+    font-size: 16px;
+    color: #666;
+}
+
+.destination__nav {
+    display: flex;
+    align-items: center;
+}
+
+.arrow-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: #f1f1f1;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 24px;
+    color: #000;
+    margin: 0 10px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.arrow-btn:hover {
+    background-color: #4CAF50;
+    color: #fff;
+    transform: scale(1.1);
+}
+
+.destination__grid {
+    display: flex;
+    overflow-x: scroll; /* Allow scrolling */
+    scroll-behavior: smooth;
+    padding-bottom: 10px;
+    /* Hide scrollbar for WebKit browsers */
+    -ms-overflow-style: none; /* Hide scrollbar for Internet Explorer and Edge */
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
+}
+
+.destination__grid::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for WebKit browsers */
+}
+
+.destination__card {
+    min-width: 300px;
+    margin-right: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.destination__card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.destination__details {
+    padding: 15px;
+}
+
+.destination__title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333; /* Default text color */
+    transition: color 0.3s ease;
+}
+
+.destination__subtitle {
+    font-size: 14px;
+    color: #777;
+    transition: color 0.3s ease;
+}
+
+.destination__card.hovered .destination__title,
+.destination__card.hovered .destination__subtitle {
+    color: red; /* Highlight text color for the hovered card */
+}
+
+.destination__card.hovered {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+
+    </style>
+</head>
+<body>
+
+    <section class="section__container destination__container" id="destination__section1">
+        <div class="section__header">
+            <div>
+                <h2 class="section__title">Explore top destinations</h2>
+                <p class="section__subtitle">
+                    Explore your suitable and dream places around the world. Here you can find your right destination.
+                </p>
+            </div>
+            <div class="destination__nav">
+                <span id="prev" class="arrow-btn"><i class="ri-arrow-left-s-line">&#9664;</i></span>
+                <span id="next" class="arrow-btn"><i class="ri-arrow-right-s-line">&#9654;</i></span>
+            </div>
+        </div>
+        <div class="destination__grid">
+            <div class="destination__card">
+                <img src="https://via.placeholder.com/300x200?text=Banff" alt="Banff, Canada" />
+                <div class="destination__details">
+                    <p class="destination__title">Banff</p>
+                    <p class="destination__subtitle">Canada</p>
+                </div>
+            </div>
+            <div class="destination__card">
+                <img src="https://via.placeholder.com/300x200?text=Machu+Picchu" alt="Machu Picchu, Peru" />
+                <div class="destination__details">
+                    <p class="destination__title">Machu Picchu</p>
+                    <p class="destination__subtitle">Peru</p>
+                </div>
+            </div>
+            <div class="destination__card">
+                <img src="https://via.placeholder.com/300x200?text=Lauterbrunnen" alt="Lauterbrunnen, Switzerland" />
+                <div class="destination__details">
+                    <p class="destination__title">Lauterbrunnen</p>
+                    <p class="destination__subtitle">Switzerland</p>
+                </div>
+            </div>
+            <div class="destination__card">
+                <img src="https://via.placeholder.com/300x200?text=Zhangjiajie" alt="Zhangjiajie, China" />
+                <div class="destination__details">
+                    <p class="destination__title">Zhangjiajie</p>
+                    <p class="destination__subtitle">China</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const prevButton = document.getElementById('prev');
+        const nextButton = document.getElementById('next');
+        const destinationGrid = document.querySelector('.destination__grid');
+        const cards = document.querySelectorAll('.destination__card');
+
+        let currentCard = 0;
+
+        function updateHoveredCard() {
+            cards.forEach((card, index) => {
+                card.classList.remove('hovered');
+                if (index === currentCard) {
+                    card.classList.add('hovered');
+                    const offset = card.offsetLeft - (destinationGrid.offsetWidth / 2) + (card.offsetWidth / 2);
+                    destinationGrid.scrollTo({ left: offset, behavior: 'smooth' });
+                }
+            });
+        }
+
+        nextButton.addEventListener('click', () => {
+            currentCard = (currentCard + 1) % cards.length;
+            updateHoveredCard();
+        });
+
+        prevButton.addEventListener('click', () => {
+            currentCard = (currentCard - 1 + cards.length) % cards.length;
+            updateHoveredCard();
+        });
+
+        // Initialize by hovering the first card
+        updateHoveredCard();
+    </script>
+
+</body>
+</html>
